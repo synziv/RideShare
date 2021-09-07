@@ -3,6 +3,7 @@ import {  GoogleApiWrapper } from 'google-maps-react';
 import './home.css';
 import { calculateAndDisplayRoute } from '../functions/mapFunctions';
 import MapsSearchBar from './MapsSearchBar';
+import SearchItinary from './SearchItinary';
 
 let map: google.maps.Map|any  = null;
 
@@ -32,7 +33,7 @@ const Home =()=>{
   const renderMapsSearchBar = ()=>{
     if(mapReady){
       console.log(map);
-      return(<MapsSearchBar map={map}/> )
+      return(<SearchItinary map={map}/> )
     }
       
     return null;

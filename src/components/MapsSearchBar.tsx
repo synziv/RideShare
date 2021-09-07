@@ -41,6 +41,7 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
         return;
       };
       // For each place, get the icon, name and location.
+      console.log(places?places[0]:"")
       setPlaceId(places?places[0].place_id:"")
       });
   }
