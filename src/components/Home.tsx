@@ -4,9 +4,12 @@ import './home.css';
 import { calculateAndDisplayRoute } from '../functions/mapFunctions';
 import MapsSearchBar from './MapsSearchBar';
 
+let map: google.maps.Map|any  = null;
+
 const Home =()=>{
-    const mapRef: React.MutableRefObject<HTMLElement | null> = useRef(null); 
-    let map = null
+    const mapRef: React.MutableRefObject<HTMLElement | null> = useRef(null);
+    const [mapReady, setMapReady] = useState(false);
+    
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
 
@@ -18,13 +21,25 @@ const Home =()=>{
   const generateMap = () => {
       map = new google.maps.Map(
         mapRef.current != null ? mapRef.current : new HTMLElement());
+      
       directionsRenderer.setMap(map);
       calculateAndDisplayRoute(directionsService, directionsRenderer);
+
+      setMapReady(true);
+      console.log(map);
   }
 
+  const renderMapsSearchBar = ()=>{
+    if(mapReady){
+      console.log(map);
+      return(<MapsSearchBar map={map}/> )
+    }
+      
+    return null;
+  }
   return (
     <div>
-      {/* <MapsSearchBar map={map}/> */}
+        {renderMapsSearchBar()}
         <div id="map" ref={element => {mapRef.current = element}}>
 
         </div>
