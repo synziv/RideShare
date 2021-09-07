@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface IMapsSearchBarProps{
   map: google.maps.Map
@@ -7,25 +7,23 @@ interface IMapsSearchBarProps{
 const MapsSearchBar =(props: IMapsSearchBarProps)=>{
   const searchBarRef: React.MutableRefObject<HTMLInputElement | null> = useRef(null);
 
-  // Create the search box and link it to the UI element.
-  const input = searchBarRef.current as HTMLInputElement;
-  const searchBox = new google.maps.places.SearchBox(input);
-  
+  // Create the search box and link it to the UI element
+  let searchBox:  google.maps.places.SearchBox;
   let markers: google.maps.Marker[] = [];
   const bounds = new google.maps.LatLngBounds();
   let places: any[] | undefined = [];
 
   useEffect(() => {
-    
-    props.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-    addBounds_changedListener();
-  
+    const input = searchBarRef.current as HTMLInputElement;
+    searchBox = new google.maps.places.SearchBox(input);
+    //props.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    //addBounds_changedListener();
     iniatiateMarkers();
 
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     //console.log(searchBox);
-    addPlaces_changedListener();
+    //addPlaces_changedListener();
   }, []);
 
   const addBounds_changedListener = ()=>{
@@ -86,9 +84,8 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
       marker.setMap(null)
     });
     markers = [];
+    
   }
-
-
   return (
     <div >
       <h1>Searchbar</h1>
@@ -96,8 +93,8 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
       id="pac-input"
       className="controls"
       type="text"
-      placeholder="Search Box"
-      ref={element=>searchBarRef.current = element}
+      placeholder="Search Box" 
+      ref={element=>{searchBarRef.current = element; console.log((element));}}
     />
     </div>
 
