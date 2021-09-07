@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import { TextField } from '@material-ui/core';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface IMapsSearchBarProps{
   map: google.maps.Map
@@ -11,19 +12,20 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
   let searchBox:  google.maps.places.SearchBox;
   let markers: google.maps.Marker[] = [];
   const bounds = new google.maps.LatLngBounds();
-  let places: any[] | undefined = [];
+  let places: google.maps.places.PlaceResult[] | undefined = [];
 
+  const [placeId, setPlaceId] = useState<string | undefined>('');
   useEffect(() => {
     const input = searchBarRef.current as HTMLInputElement;
     searchBox = new google.maps.places.SearchBox(input);
     //props.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-    //addBounds_changedListener();
+    addBounds_changedListener();
     iniatiateMarkers();
 
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     //console.log(searchBox);
-    //addPlaces_changedListener();
+    addPlaces_changedListener();
   }, []);
 
   const addBounds_changedListener = ()=>{
@@ -39,44 +41,10 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
         return;
       };
       // For each place, get the icon, name and location.
-      generatePlaces();
+      setPlaceId(places?places[0].place_id:"")
       });
   }
-  const generatePlaces = ()=>{
-    if(typeof places !== 'undefined'){
-      places.forEach((place) => {
-        if (!place.geometry || !place.geometry.location) {
-          console.log("Returned place contains no geometry");
-          return;
-        }
-        const icon = {
-          url: place.icon as string,
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 34),
-          scaledSize: new google.maps.Size(25, 25),
-        }; 
-  
-        // Create a marker for each place.
-        // markers.push(
-        //   new google.maps.Marker({
-        //     map,
-        //     icon,
-        //     title: place.name,
-        //     position: place.geometry.location,
-        //   })
-        // );
-  
-        // if (place.geometry.viewport) {
-        //   // Only geocodes have viewport.
-        //   bounds.union(place.geometry.viewport);
-        // } else {
-        //   bounds.extend(place.geometry.location);
-        // }
-      });
-      props.map.fitBounds(bounds);
-    };
-  }
+
 
   const iniatiateMarkers = ()=>{
  // Clear out the old markers.
@@ -89,13 +57,11 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
   return (
     <div >
       <h1>Searchbar</h1>
-      <input
-      id="pac-input"
-      className="controls"
-      type="text"
-      placeholder="Search Box" 
-      ref={element=>{searchBarRef.current = element; console.log((element));}}
-    />
+      <TextField 
+        id="standard-basic pac-input" 
+        className="controls" 
+        label="Standard" 
+        inputRef={element=>{searchBarRef.current = element}}/>
     </div>
 
   )
