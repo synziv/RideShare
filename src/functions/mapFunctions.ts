@@ -1,13 +1,15 @@
 export function calculateAndDisplayRoute(
     directionsService: google.maps.DirectionsService,
-    directionsRenderer: google.maps.DirectionsRenderer
+    directionsRenderer: google.maps.DirectionsRenderer,
+    startLocation:google.maps.places.PlaceGeometry,
+    destinationILocation:google.maps.places.PlaceGeometry
   ) {
-    var haight = new google.maps.LatLng(37.7699298, -122.4469157);
-    var oceanBeach = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
+    const start = new google.maps.LatLng(startLocation.location?.lat, startLocation.location?.lng);
+    const destination = new google.maps.LatLng(destinationLocation.location?.lat, destinationLocation.location?.lng);
     directionsService
       .route({
-        origin: haight,
-        destination: oceanBeach,
+        origin: new map
+        destination: destinationILocation,
         travelMode: google.maps.TravelMode.DRIVING,
       })
       .then((response) => {

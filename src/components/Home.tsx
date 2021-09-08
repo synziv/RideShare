@@ -10,7 +10,8 @@ let map: google.maps.Map|any  = null;
 const Home =()=>{
     const mapRef: React.MutableRefObject<HTMLElement | null> = useRef(null);
     const [mapReady, setMapReady] = useState(false);
-    
+    const [startId, setStartId] = useState("");
+    const [destinationId, setDestinationId] = useState("");
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
 
@@ -29,11 +30,16 @@ const Home =()=>{
       setMapReady(true);
       console.log(map);
   }
-
+  const handleDestinationId=(id:string)=>{
+    setDestinationId(id);
+  }
+  const handleStartId=(id:string)=>{
+    setStartId(id);
+  }
   const renderMapsSearchBar = ()=>{
     if(mapReady){
       console.log(map);
-      return(<SearchItinary map={map}/> )
+      return(<SearchItinary map={map} handleStartId={handleStartId} handleDestinationId = {handleDestinationId}/> )
     }
       
     return null;

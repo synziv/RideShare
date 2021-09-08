@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 interface IMapsSearchBarProps{
   map: google.maps.Map
+  handlePlaceId: Function
 }
 
 const MapsSearchBar =(props: IMapsSearchBarProps)=>{
@@ -40,9 +41,9 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
       if (typeof places !== 'undefined' && places.length == 0) {
         return;
       };
-      // For each place, get the icon, name and location.
-      console.log(places?places[0]:"")
-      setPlaceId(places?places[0].place_id:"")
+      
+      if(places)
+        props.handlePlaceId(places[0].geometry?.location) 
       });
   }
 
@@ -62,7 +63,7 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
         id="standard-basic pac-input" 
         className="controls" 
         label="Standard" 
-        inputRef={element=>{searchBarRef.current = element}}/>
+        inputRef={(element: HTMLInputElement | null)=>{searchBarRef.current = element}}/>
     </div>
 
   )
