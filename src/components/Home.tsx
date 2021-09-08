@@ -5,52 +5,60 @@ import { calculateAndDisplayRoute } from '../functions/mapFunctions';
 import MapsSearchBar from './MapsSearchBar';
 import SearchItinary from './SearchItinary';
 
-let map: google.maps.Map|any  = null;
+let map: google.maps.Map | null  = null;
 
 const Home =()=>{
     const mapRef: React.MutableRefObject<HTMLElement | null> = useRef(null);
     const [mapReady, setMapReady] = useState(false);
-    const [startId, setStartId] = useState("");
-    const [destinationId, setDestinationId] = useState("");
+    const [start, setStart] = useState<google.maps.LatLng>();
+    const [destination, setDestination] = useState<google.maps.LatLng>();
     const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
+    let directionsRenderer = new google.maps.DirectionsRenderer();
 
     useEffect(() => {
-      generateMap();
+      initiateMap();
+      setMapReady(true);
     }, []);
 
-
+  const handleClick = ()=>{
+    generateMap();
+  }
+  const initiateMap = ()=>{
+    const uluru = { lat: 0, lng: 0 };
+    const input = mapRef.current as HTMLDivElement;
+    map = new google.maps.Map(
+      input,
+      {
+        zoom: 2,
+        center: uluru,
+      }
+    );
+  }
+  const resetMap = ()=>{
+    map = new google.maps.Map(mapRef.current as HTMLDivElement);
+  }
   const generateMap = () => {
-      map = new google.maps.Map(
-        mapRef.current != null ? mapRef.current : new HTMLElement());
-      
-      directionsRenderer.setMap(map);
-      calculateAndDisplayRoute(directionsService, directionsRenderer);
-
-      setMapReady(true);
-      console.log(map);
+    resetMap();
+    directionsRenderer.setMap(map);
+    calculateAndDisplayRoute(directionsService, directionsRenderer, start!, destination!);
+    setMapReady(true);
   }
-  const handleDestinationId=(id:string)=>{
-    setDestinationId(id);
+  const handleDestination=(destination:google.maps.LatLng)=>{
+    setDestination(destination);
   }
-  const handleStartId=(id:string)=>{
-    setStartId(id);
+  const handleStart=(start:google.maps.LatLng)=>{
+    setStart(start);
   }
   const renderMapsSearchBar = ()=>{
-    if(mapReady){
-      console.log(map);
-      return(<SearchItinary map={map} handleStartId={handleStartId} handleDestinationId = {handleDestinationId}/> )
-    }
-      
+    if(mapReady)
+      return(<SearchItinary map={map!} handleStart={handleStart} handleDestination = {handleDestination} handleClick={handleClick}/> )
     return null;
   }
   return (
     <div>
         {renderMapsSearchBar()}
         <div id="map" ref={element => {mapRef.current = element}}>
-
         </div>
-        
     </div>
     
 

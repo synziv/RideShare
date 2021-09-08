@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 interface IMapsSearchBarProps{
   map: google.maps.Map
-  handlePlaceId: Function
+  handlePlace: Function
 }
 
 const MapsSearchBar =(props: IMapsSearchBarProps)=>{
@@ -15,17 +15,14 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
   const bounds = new google.maps.LatLngBounds();
   let places: google.maps.places.PlaceResult[] | undefined = [];
 
-  const [placeId, setPlaceId] = useState<string | undefined>('');
   useEffect(() => {
     const input = searchBarRef.current as HTMLInputElement;
     searchBox = new google.maps.places.SearchBox(input);
-    //props.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-    addBounds_changedListener();
+    //addBounds_changedListener();
     iniatiateMarkers();
 
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
-    //console.log(searchBox);
     addPlaces_changedListener();
   }, []);
 
@@ -43,7 +40,7 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
       };
       
       if(places)
-        props.handlePlaceId(places[0].geometry?.location) 
+        props.handlePlace(places[0].geometry?.location) 
       });
   }
 
