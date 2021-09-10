@@ -1,0 +1,6 @@
+#itinaryCard{
+    position: absolute;
+    z-index: 10;
+    top: 10vh;
+    left: 1vw;
+}

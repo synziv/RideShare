@@ -30,7 +30,7 @@ const Home =()=>{
       input,
       {
         zoom: 2,
-        center: uluru,
+        center: uluru
       }
     );
   }
