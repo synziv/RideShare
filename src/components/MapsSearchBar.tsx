@@ -55,7 +55,6 @@ const MapsSearchBar =(props: IMapsSearchBarProps)=>{
   }
   return (
     <div >
-      <h1>Searchbar</h1>
       <TextField 
         id="standard-basic pac-input" 
         className="controls" 
